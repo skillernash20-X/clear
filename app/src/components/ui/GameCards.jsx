@@ -111,12 +111,12 @@ export function GameCards(props) {
                       <Show when={!libraryData.userSettings.gameTitle}>
                         <span class="absolute z-100 max-w-[50%]!">{gameId}</span>
                       </Show>
-                      <div class="relative z-10 mb-[7px] aspect-2/3 w-full bg-media-placeholder outline-4 outline-game-outline outline-hidden duration-200 hover:outline-game-outline-hover motion-reduce:duration-100 group-hover:outline-game-outline-hover" />
+                      <div class="relative z-10 mb-[7px] aspect-2/3 w-full bg-media-placeholder outline-4 outline-game-outline outline-hidden duration-200 hover:outline-game-outline-hover group-hover:outline-game-outline-hover motion-reduce:duration-100" />
                     </div>
                   }
                 >
                   <img
-                    class="relative z-10 mb-[7px] outline-4 outline-game-outline outline-hidden duration-200 hover:outline-game-outline-hover motion-reduce:duration-100 group-hover:outline-game-outline-hover"
+                    class="relative z-10 mb-[7px] outline-4 outline-game-outline outline-hidden duration-200 hover:outline-game-outline-hover group-hover:outline-game-outline-hover motion-reduce:duration-100"
                     src={grid()}
                     alt=""
                     width="100%"

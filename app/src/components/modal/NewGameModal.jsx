@@ -1,4 +1,4 @@
-/** biome-ignore-all lint/a11y/useKeyWithMouseEvents: <explanation> */
+/** biome-ignore-all lint/a11y/useKeyWithMouseEvents: ignore rule */
 import { convertFileSrc, invoke } from "@tauri-apps/api/core";
 import { createEffect, createSignal, For, Match, onCleanup, onMount, Show, Switch } from "solid-js";
 import { LoadingTextAndIcon } from "@/components/modal/Loading";
@@ -12,7 +12,7 @@ import {
   selectImageFileLocation,
 } from "@/services/gameService.js";
 import { libraryData } from "@/stores/libraryStore";
-import { closeModal, modalShowCloseConfirm } from "@/stores/modalStore.js";
+import { closeModal, modalShowCloseConfirm, setConfirmWhileClosing } from "@/stores/modalStore.js";
 import { triggerToast } from "@/stores/toastStore.js";
 import { checkIfConnectedToInternet, checkIfConnectedToServer } from "@/utils/internet.js";
 import { getExecutableFileName, getExecutableParentFolder } from "@/utils/paths.js";
@@ -29,7 +29,7 @@ export function NewGameModal() {
 
   const [gameLocation, setGameLocation] = createSignal();
 
-  const [showRightClickTip, setShowRightClickTip] = createSignal(false);
+  const [showRightClickTip, _setShowRightClickTip] = createSignal(false);
   const [hoveredAsset, setHoveredAsset] = createSignal(null);
 
   const [gameName, setGameName] = createSignal("");
@@ -40,12 +40,32 @@ export function NewGameModal() {
   const [logoImage, setLogoImage] = createSignal({ type: "local", data: undefined });
   const [iconImage, setIconImage] = createSignal({ type: "local", data: undefined });
 
+  createEffect(() => {
+    const isNameEmpty = !gameName() || gameName().trim() === "";
+    const isLocationEmpty = !gameLocation();
+    const isGridEmpty = !gridImage()?.data;
+    const isHeroEmpty = !heroImage()?.data;
+    const isLogoEmpty = !logoImage()?.data;
+    const isIconEmpty = !iconImage()?.data;
+    const isFavouriteUnchanged = !favourite();
+
+    const isEmptyOrUnchanged =
+      isNameEmpty &&
+      isLocationEmpty &&
+      isGridEmpty &&
+      isHeroEmpty &&
+      isLogoEmpty &&
+      isIconEmpty &&
+      isFavouriteUnchanged;
+    setConfirmWhileClosing(!isEmptyOrUnchanged);
+  });
+
   const [searchResults, setSearchResults] = createSignal();
 
   const [fetchingAssetsLoading, setFetchingAssetsLoading] = createSignal(false);
 
   // for sgdb official game name picker scroll
-  let scrollInterval;
+  let _scrollInterval;
 
   createEffect(() => {
     console.log("type:", logoImage().type);
@@ -535,10 +555,10 @@ export function NewGameModal() {
                   <Match when={libraryData.userSettings.language === "fr" && windowWidth() >= 1500}>{t("find")}</Match>
 
                   <Match when={libraryData.userSettings.language === "fr" && windowWidth() <= 1500}>
-                    <p class="w-[100px] text-clip text-[10px]">{t("find")}</p>
+                    <p class="w-[100px] text-clip text-[10px]">{translateText("assets.find")}</p>
                   </Match>
 
-                  <Match when={libraryData.userSettings.language !== "fr"}>{t("find")}</Match>
+                  <Match when={libraryData.userSettings.language !== "fr"}>{translateText("assets.find")}</Match>
                 </Switch>
               </button>
             </div>

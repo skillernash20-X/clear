@@ -3,6 +3,7 @@ import { createSignal } from "solid-js";
 const [modalState, setModalState] = createSignal(null);
 const [modalVisible, setModalVisible] = createSignal(false);
 const [modalShowCloseConfirm, setModalShowCloseConfirm] = createSignal(false);
+const [confirmWhileClosing, setConfirmWhileClosing] = createSignal(false);
 
 async function openModal({ type, component, confirmWhileClosing = false, onClose }) {
   const state = modalState();
@@ -11,7 +12,8 @@ async function openModal({ type, component, confirmWhileClosing = false, onClose
     await doClose();
   }
 
-  setModalState({ type, component: () => component, confirmWhileClosing, onClose });
+  setModalState({ type, component: () => component, onClose });
+  setConfirmWhileClosing(confirmWhileClosing);
 
   requestAnimationFrame(() => {
     setModalVisible(true);
@@ -40,7 +42,7 @@ function closeModal(force = false) {
   const state = modalState();
   if (!state) return;
 
-  if (force || !state.confirmWhileClosing) {
+  if (force || !confirmWhileClosing()) {
     doClose();
     state.onClose?.();
     return;
@@ -61,4 +63,12 @@ function closeModal(force = false) {
   }, 1500);
 }
 
-export { closeModal, modalShowCloseConfirm, modalState, modalVisible, openModal };
+export {
+  closeModal,
+  confirmWhileClosing,
+  modalShowCloseConfirm,
+  modalState,
+  modalVisible,
+  openModal,
+  setConfirmWhileClosing,
+};

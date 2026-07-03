@@ -5,7 +5,7 @@ import { totalImportedSteamGames, totalSteamGames } from "../../stores/steamStor
 export function LoadingModal() {
   return (
     <div class="flex h-screen w-screen items-center justify-center bg-overlay align-middle">
-      <div class="flex w-max items-center justify-between gap-2 panel-surface p-3">
+      <div class="panel-surface flex w-max items-center justify-between gap-2 p-3">
         <Show when={totalSteamGames()}>{`${totalImportedSteamGames() + 1} / ${totalSteamGames()}`} </Show>
         {translateText("common.loading")}{" "}
         <div class="relative">

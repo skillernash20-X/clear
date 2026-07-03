@@ -1,17 +1,22 @@
-import { createSignal, Show } from "solid-js";
+import { createEffect, createSignal, Show } from "solid-js";
 import { Close, SaveDisk } from "@/libraries/Icons.jsx";
 import { addFolder } from "@/services/folderService.js";
 import { libraryData } from "@/stores/libraryStore";
-import { closeModal, modalShowCloseConfirm } from "@/stores/modalStore.js";
+import { closeModal, modalShowCloseConfirm, setConfirmWhileClosing } from "@/stores/modalStore.js";
 import { translateText } from "@/utils/translateText";
 
 export function NewFolderModal() {
   const [folderName, setFolderName] = createSignal();
   const [hideFolder, setHideFolder] = createSignal(false);
 
+  createEffect(() => {
+    const isEmptyOrUnchanged = (!folderName() || folderName().trim() === "") && !hideFolder();
+    setConfirmWhileClosing(!isEmptyOrUnchanged);
+  });
+
   return (
     <div class="flex h-screen w-screen items-center justify-center bg-overlay align-middle">
-      <div class="w-[60%] panel-surface p-6">
+      <div class="panel-surface w-[60%] p-6">
         <div
           class={`flex justify-between ${libraryData.userSettings.language !== "en" ? "large:flex-row flex-col" : ""} `}
         >

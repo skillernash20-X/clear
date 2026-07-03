@@ -275,7 +275,7 @@ export function SideBar() {
           </form>
           <button
             type="button"
-            class="tooltip-delayed-bottom w-[28px] cursor-pointer p-2 duration-150 card-hover"
+            class="tooltip-delayed-bottom card-hover w-[28px] cursor-pointer p-2 duration-150"
             onClick={() => {
               toggleSideBar();
             }}
@@ -493,7 +493,7 @@ export function SideBar() {
         type="button"
         class="icon-btn mt-[12px] w-full"
         onClick={() => {
-          openModal({ type: "newGame", component: NewGameModal, confirmWhileClosing: true });
+          openModal({ type: "newGame", component: NewGameModal });
 
           console.log(JSON.stringify(libraryData.games));
         }}
@@ -507,7 +507,7 @@ export function SideBar() {
         type="button"
         class="icon-btn mt-[12px] w-full"
         onClick={() => {
-          openModal({ type: "newFolder", component: NewFolderModal, confirmWhileClosing: true });
+          openModal({ type: "newFolder", component: NewFolderModal });
         }}
       >
         {translateText("library.add_folder")}

@@ -83,7 +83,7 @@ export function SettingsModal() {
 
   return (
     <div class="flex h-screen w-screen items-center justify-center bg-overlay align-middle">
-      <div class="w-[70%] panel-surface p-6">
+      <div class="panel-surface w-[70%] p-6">
         <div class="flex justify-between">
           <div>
             <h1 class="title">{translateText("settings.title")}</h1>

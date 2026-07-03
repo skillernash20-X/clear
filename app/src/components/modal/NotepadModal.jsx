@@ -34,7 +34,7 @@ export function NotepadModal() {
 
   return (
     <div class="flex h-screen w-screen items-center justify-center bg-overlay align-middle">
-      <div class="w-[50%] panel-surface p-6">
+      <div class="panel-surface w-[50%] p-6">
         <div class="flex justify-between">
           <div>
             <h1 class="title">

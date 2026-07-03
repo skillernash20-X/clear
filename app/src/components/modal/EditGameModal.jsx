@@ -16,7 +16,7 @@ import { userIsTabbing, windowWidth } from "@/stores/applicationStore";
 import { clearContextMenuData, openContextMenu } from "@/stores/contextMenuStore";
 import { libraryData } from "@/stores/libraryStore";
 import { openModal } from "@/stores/modalStore";
-import { closeModal, modalShowCloseConfirm } from "@/stores/modalStore.js";
+import { closeModal, modalShowCloseConfirm, setConfirmWhileClosing } from "@/stores/modalStore.js";
 import { selectedGame } from "@/stores/selectedGameStore";
 import { triggerToast } from "@/stores/toastStore.js";
 import { checkIfConnectedToInternet, checkIfConnectedToServer } from "@/utils/internet.js";
@@ -41,6 +41,18 @@ export function EditGameModal() {
   const [heroImage, setHeroImage] = createSignal({ type: "local", data: undefined });
   const [logoImage, setLogoImage] = createSignal({ type: "local", data: undefined });
   const [iconImage, setIconImage] = createSignal({ type: "local", data: undefined });
+
+  createEffect(() => {
+    const isNameEmpty = !gameName() || gameName().trim() === "";
+    const isLocationEmpty = !gameLocation();
+    const isGridEmpty = !gridImage()?.data;
+    const isHeroEmpty = !heroImage()?.data;
+    const isLogoEmpty = !logoImage()?.data;
+    const isIconEmpty = !iconImage()?.data;
+
+    const isEmpty = isNameEmpty && isLocationEmpty && isGridEmpty && isHeroEmpty && isLogoEmpty && isIconEmpty;
+    setConfirmWhileClosing(!isEmpty);
+  });
 
   const [showDeleteConfirm, setShowDeleteConfirm] = createSignal(false);
   const [hoveredAsset, setHoveredAsset] = createSignal(null);
@@ -380,7 +392,7 @@ export function EditGameModal() {
                   ? `${gridImage().index + 1} / ${gridImage().data.length} ${translateText("assets.arrow_keys")}`
                   : `${gridImage().index + 1} / ${gridImage().data.length} ${translateText("assets.scroll")}`
                 : `${gridImage().index + 1} / ${gridImage().data.length} ${translateText("common.loading")}`
-              : t("assets.cover")
+              : translateText("assets.cover")
           }
         >
           <img
@@ -621,7 +633,7 @@ export function EditGameModal() {
                 <Show when={!fetchingAssetsLoading()} fallback={LoadingTextAndIcon()}>
                   <Switch>
                     <Match when={libraryData.userSettings.language === "fr" && windowWidth() >= 1500}>
-                      {t("auto_find")}
+                      {translateText("auto_find")}
                     </Match>
 
                     <Match when={libraryData.userSettings.language === "fr" && windowWidth() <= 1500}>
@@ -650,13 +662,15 @@ export function EditGameModal() {
                 }}
               >
                 <Switch>
-                  <Match when={libraryData.userSettings.language === "fr" && windowWidth() >= 1500}>{t("find")}</Match>
-
-                  <Match when={libraryData.userSettings.language === "fr" && windowWidth() <= 1500}>
-                    <p class="w-[100px] text-clip text-[10px]">{t("find")}</p>
+                  <Match when={libraryData.userSettings.language === "fr" && windowWidth() >= 1500}>
+                    {translateText("assets.find")}
                   </Match>
 
-                  <Match when={libraryData.userSettings.language !== "fr"}>{t("find")}</Match>
+                  <Match when={libraryData.userSettings.language === "fr" && windowWidth() <= 1500}>
+                    <p class="w-[100px] text-clip text-[10px]">{translateText("assets.find")}</p>
+                  </Match>
+
+                  <Match when={libraryData.userSettings.language !== "fr"}>{translateText("assets.find")}</Match>
                 </Switch>
               </button>
             </div>

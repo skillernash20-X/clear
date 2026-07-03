@@ -193,10 +193,10 @@ function App() {
                 <button
                   type="button"
                   class="standardButton tooltip-bottom icon-btn w-max!"
-                  data-tooltip={translateText("sidebar.import_steam_warning")}
+                  data-tooltip={translateText("steam.import_warning")}
                   onClick={handleImportSteamGames}
                 >
-                  {translateText("sidebar.import_steam")}
+                  {translateText("steam.import")}
                   <Steam />
                 </button>
 

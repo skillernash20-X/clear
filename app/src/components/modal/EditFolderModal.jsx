@@ -1,10 +1,10 @@
-import { createSignal, Match, Show, Switch } from "solid-js";
+import { createEffect, createSignal, Match, Show, Switch } from "solid-js";
 import { Close, SaveDisk, TrashDelete } from "@/libraries/Icons.jsx";
 import { triggerToast } from "@/stores/toastStore.js";
 import { translateText } from "@/utils/translateText";
 import { deleteFolder, updateFolder } from "../../services/folderService";
 import { libraryData } from "../../stores/libraryStore";
-import { closeModal, modalShowCloseConfirm } from "../../stores/modalStore";
+import { closeModal, modalShowCloseConfirm, setConfirmWhileClosing } from "../../stores/modalStore";
 import { selectedFolder } from "../../stores/selectedFolderStore";
 
 export function EditFolderModal() {
@@ -13,6 +13,12 @@ export function EditFolderModal() {
   const [showDeleteConfirm, setShowDeleteConfirm] = createSignal(false);
 
   const folder = () => libraryData.folders[selectedFolder()];
+
+  createEffect(() => {
+    const currentName = editedFolderName() !== undefined ? editedFolderName() : folder()?.name;
+    const isEmpty = !currentName || currentName.trim() === "";
+    setConfirmWhileClosing(!isEmpty);
+  });
 
   async function saveChanges() {
     try {
@@ -44,7 +50,7 @@ export function EditFolderModal() {
   return (
     <Show when={folder()}>
       <div class="flex h-screen w-screen items-center justify-center bg-overlay align-middle">
-        <div class="w-[60%] panel-surface p-6">
+        <div class="panel-surface w-[60%] p-6">
           <div
             class={`flex justify-between ${libraryData.userSettings.language !== "en" ? "large:flex-row flex-col" : ""} `}
           >
@@ -115,7 +121,7 @@ export function EditFolderModal() {
 
               <button
                 type="button"
-                class="w-max icon-btn "
+                class="icon-btn w-max"
                 onClick={() => {
                   closeModal();
                 }}

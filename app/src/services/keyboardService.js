@@ -100,7 +100,7 @@ export function addEventListeners() {
             triggerToast(translateText("close current dialog before opening another"));
             return;
           }
-          openModal({ type: "newGame", component: NewGameModal, confirmWhileClosing: true });
+          openModal({ type: "newGame", component: NewGameModal });
           break;
 
         // opens new folder modal
@@ -110,7 +110,7 @@ export function addEventListeners() {
             triggerToast(translateText("close current dialog before opening another"));
             return;
           }
-          openModal({ type: "newFolder", component: NewFolderModal, confirmWhileClosing: true });
+          openModal({ type: "newFolder", component: NewFolderModal });
           break;
 
         // opens notepad modal

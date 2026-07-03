@@ -11,7 +11,7 @@
 
 .icon-btn {
   background-color: var(--card);
-  color: var(--foreground) !important;
+  color: var(--foreground);
   @apply flex h-12 cursor-pointer items-center justify-between gap-2 px-3 transition hover:bg-card-hover;
 }
 
