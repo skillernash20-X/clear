@@ -1,4 +1,4 @@
-# Spider-X Games
+# Spider Games
 
 <table>
     <tbody>

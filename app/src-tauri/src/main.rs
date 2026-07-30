@@ -8,6 +8,8 @@ use std::env;
 use std::process::Command;
 use std::vec::Vec;
 
+mod cpp;
+
 #[tauri::command]
 fn open_location(location: &str) {
     let _ = if cfg!(target_os = "windows") {
@@ -20,6 +22,30 @@ fn open_location(location: &str) {
 #[tauri::command]
 fn get_platform() -> &'static str {
     std::env::consts::OS
+}
+
+#[tauri::command]
+fn run_launcher_core(action: String, payload: String) -> Result<String, String> {
+    let core = cpp::launcher::LauncherCore::new();
+    match action.as_str() {
+        "register" => Ok(core.register_account(payload)),
+        "login" => Ok(core.login(payload)),
+        "profile" => Ok(core.get_profile()),
+        "catalog" => Ok(core.get_store_catalog()),
+        "library" => Ok(core.get_library()),
+        "notifications" => Ok(core.get_notifications()),
+        "settings" => Ok(core.get_settings()),
+        "friends" => Ok(core.get_friends()),
+        "achievements" => Ok(core.get_achievements()),
+        "cloud_saves" => Ok(core.get_cloud_saves()),
+        "publish" => Ok(core.publish_game(payload, "action".to_string())),
+        "marketplace_features" => Ok(core.get_marketplace_features()),
+        "marketplace_creators" => Ok(core.get_marketplace_creators()),
+        "marketplace_recommendations" => Ok(core.get_marketplace_recommendations()),
+        "marketplace_downloads" => Ok(core.get_download_library()),
+        "marketplace_security" => Ok(core.get_security_status()),
+        _ => Err("Unsupported launcher action".to_string()),
+    }
 }
 
 #[tauri::command]
@@ -97,7 +123,8 @@ fn main() {
             read_steam_vdf,
             download_image,
             get_platform,
-            delete_asset
+            delete_asset,
+            run_launcher_core
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

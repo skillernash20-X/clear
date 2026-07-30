@@ -1,10 +1,10 @@
 [package]
-name = "clear"
+name = "spider_games"
 version = "1.0.0"
-description = "clear - video game library"
+description = "Spider Games launcher"
 authors = ["adithya.zip"]
 license = "Unlicense"
-repository = "https://github.com/adithyasource/clear"
+repository = "https://github.com/SPIDER-X-GAMES/clear"
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
